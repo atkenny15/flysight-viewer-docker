@@ -1,0 +1,39 @@
+From 0dc9c17f7a45c60efbd14212fa913369c41b9fe8 Mon Sep 17 00:00:00 2001
+From: Andy Kenny <atkenny15@gmail.com>
+Date: Mon, 22 Apr 2019 14:03:24 -0400
+Subject: [PATCH] Link against wwwidgets5
+
+---
+ src/FlySightViewer.pro | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/FlySightViewer.pro b/src/FlySightViewer.pro
+index 1f9fe85..b762728 100644
+--- a/src/FlySightViewer.pro
++++ b/src/FlySightViewer.pro
+@@ -153,19 +153,19 @@ INCLUDEPATH += ../include/GeographicLib
+ win32 {
+     LIBS += -L../lib
+     LIBS += -lVLCQtCore -l VLCQtQml -lVLCQtWidgets
+-    LIBS += -lwwwidgets4
++    LIBS += -lwwwidgets5
+ }
+ else:macx {
+     QMAKE_LFLAGS += -F../frameworks
+     LIBS         += -framework VLCQtCore
+     LIBS         += -framework VLCQtQml
+     LIBS         += -framework VLCQtWidgets
+-    LIBS         += -framework wwwidgets4
++    LIBS         += -framework wwwidgets5
+ }
+ else {
+     LIBS += -L/usr/local/lib
+     LIBS += -lvlc-qt -lvlc-qt-widgets
+-    LIBS += -lwwwidgets4
++    LIBS += -lwwwidgets5
+ }
+ 
+ macx {
+-- 
+2.19.0
+
