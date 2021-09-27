@@ -12,7 +12,7 @@ build_nocache:
 run:
 	docker run -i -t \
 	    --env _JAVA_AWT_WM_NONREPARENTING=1 \
-	    --env DISPLAY=unix:0 \
+	    --env DISPLAY=unix$(DISPLAY) \
 	    --volume /tmp/.X11-unix:/tmp/.X11-unix \
 	    --volume "${HOME}/.Xauthority:${HOME}/.Xauthority:rw" \
 	    --volume "${HOME}/.Xauthority:/root/.Xauthority:rw" \

@@ -41,6 +41,7 @@ cd "${DIR}"
 if [[ ! -e flysight-viewer-qt ]]; then
     git clone https://github.com/atkenny15/flysight-viewer-qt.git
     cd flysight-viewer-qt
+    git checkout b349eac11afc900e251e284ce1040efccadd0ee8
     git am ../0*
 
     if [[ -e "${DIR}/secrets.h" ]]; then
