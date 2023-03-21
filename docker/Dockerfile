@@ -19,13 +19,27 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     libvlccore-dev \
     libqt5webenginewidgets5 \
     qtwebengine5-dev \
-    cmake \
     vlc-plugin-qt \
     gdb \
     sudo \
-    kmod
+    kmod \
+    python3-pip \
+    gcc-10 \
+    g++-10 \
+    curl \
+    gfortran \
+    tmux
 
 RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
+
+# TODO(akenny): Use FindPackage for libflysight
+RUN export DEBIAN_FRONTEND=noninteractive && \
+    apt-get install -y \
+    libaec-dev
+
+RUN cd /usr && curl -L https://github.com/Kitware/CMake/releases/download/v3.25.1/cmake-3.25.1-linux-x86_64.tar.gz | tar --strip 1 -zxv
+
+RUN pip3 install pillow conan
 
 # Install nvidia driver
 COPY nvidia.run /tmp/
@@ -35,7 +49,7 @@ RUN mkdir -p /usr/local/src/flysight
 
 # Build and install vlc-qt
 RUN cd /usr/local/src/flysight && \
-    git clone git://github.com/vlc-qt/vlc-qt.git && \
+    git clone https://github.com/vlc-qt/vlc-qt.git && \
     cd vlc-qt && \
     git submodule init && \
     git submodule update
@@ -68,15 +82,19 @@ RUN cd /usr/local/src/flysight/wwwidgets && \
 
 COPY flysight-viewer-qt /usr/local/src/flysight/flysight-viewer-qt/
 
-# Build flysight viewer
-RUN export QT_SELECT=qt5 && \
-    cd /usr/local/src/flysight/flysight-viewer-qt/src && \
-    qmake && \
-    make -j12
+## Build flysight viewer
+#RUN export QT_SELECT=qt5 && \
+#    cd /usr/local/src/flysight/flysight-viewer-qt/src && \
+#    conan install -g qmake . && \
+#    qmake && \
+#    make -j12
+
+# conan create -s compiler.version=10 -s compiler.cppstd=20 -s compiler.libcxx=libstdc++11 .
+# conan install -s compiler.version=10 -s compiler.cppstd=20 -s compiler.libcxx=libstdc++11 -g qmake .
 
 # Setup user
 ARG user
 ARG uid
-RUN useradd -G sudo,tty -u ${uid} -m ${user} && \
+RUN useradd -s /bin/bash -G sudo,tty -u ${uid} -m ${user} && \
     echo 'export EDITOR="vim"' >> /home/${user}/.bashrc && \
     echo $user:password | chpasswd

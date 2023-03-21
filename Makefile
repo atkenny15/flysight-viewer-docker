@@ -10,6 +10,7 @@ build_nocache:
 
 .PHONY: bash
 bash:
+	mkdir -p "${HOME}/flysight_home"
 	docker run -i -t \
 	    --env _JAVA_AWT_WM_NONREPARENTING=1 \
 	    --env DISPLAY=unix$(DISPLAY) \
@@ -21,8 +22,11 @@ bash:
 	    --volume /tmp/.X11-unix:/tmp/.X11-unix \
 	    --volume "${HOME}/.Xauthority:${HOME}/.Xauthority:rw" \
 	    --volume "${HOME}/.Xauthority:/root/.Xauthority:rw" \
-	    --volume "${HOME}:${HOME}" \
+	    --volume "${HOME}/flysight_home:${HOME}" \
+	    --volume "${HOME}/.tmux.conf:${HOME}/.tmux.conf" \
+	    --volume "${HOME}/vmtmux:${HOME}/vmtmux" \
 	    --volume "$(shell pwd)/docker/flysight-viewer-qt:/tmp/flysight-viewer-qt" \
+	    --volume "$(shell pwd)/docker/libflysight:/tmp/libflysight" \
 	    --user $(shell whoami) \
 	    --rm \
 	    flysight-viewer \
@@ -30,6 +34,7 @@ bash:
 
 .PHONY: run
 run:
+	mkdir -p "${HOME}/flysight_home"
 	docker run -i -t \
 	    --env _JAVA_AWT_WM_NONREPARENTING=1 \
 	    --env DISPLAY=unix$(DISPLAY) \
@@ -41,7 +46,7 @@ run:
 	    --volume /tmp/.X11-unix:/tmp/.X11-unix \
 	    --volume "${HOME}/.Xauthority:${HOME}/.Xauthority:rw" \
 	    --volume "${HOME}/.Xauthority:/root/.Xauthority:rw" \
-	    --volume "${HOME}:${HOME}" \
+	    --volume "${HOME}/flysight_home:${HOME}" \
 	    --user $(shell whoami) \
 	    --rm \
 	    flysight-viewer \
