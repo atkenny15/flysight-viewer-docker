@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 RUN apt-get update -y
 
@@ -14,6 +14,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     libqt5webengine5 \
     git \
     build-essential \
+    lld \
     wget \
     libvlc-dev \
     libvlccore-dev \
@@ -35,7 +36,7 @@ RUN mkdir -p /usr/local/src/flysight
 
 # Build and install vlc-qt
 RUN cd /usr/local/src/flysight && \
-    git clone git://github.com/vlc-qt/vlc-qt.git && \
+    git clone https://github.com/vlc-qt/vlc-qt.git && \
     cd vlc-qt && \
     git submodule init && \
     git submodule update
